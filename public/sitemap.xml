@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://www.afghansaffronandspice.us/</loc>
+    <lastmod>2024-01-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.afghansaffronandspice.us/lovable-uploads/e3aef8a5-4119-4308-8d9f-0269659e88c0.png</image:loc>
+      <image:title>Afghan Saffron and Spice Logo</image:title>
+      <image:caption>Authentic Afghan cuisine and premium spices</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.afghansaffronandspice.us/src/assets/Bolani.jpg</image:loc>
+      <image:title>Afghan Bolani</image:title>
+      <image:caption>Traditional Afghan stuffed flatbread</image:caption>
+    </image:image>
+  </url>
+</urlset>

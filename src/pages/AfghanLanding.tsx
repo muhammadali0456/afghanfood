@@ -3,41 +3,44 @@ import Header from "@/components/Header";
 import Logo from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import AnimatedSection from "@/components/AnimatedSection";
+import SEO from "@/components/SEO";
 import { FoodShowcase, MenuSection, CateringSection, LocationSection, Footer } from "@/components/EnhancedSections";
 
 const AfghanLanding = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEO />
       {/* Header */}
       <Header />
 
       {/* Main Content */}
-      <div className="flex flex-col items-center justify-center px-4 py-8 md:py-12">
+      <main className="flex flex-col items-center justify-center px-4 py-8 md:py-12">
         {/* Logo Section */}
-        <motion.div 
+        <motion.section 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
           className="mb-12 md:mb-16"
+          aria-label="Afghan Saffron and Spice Logo"
         >
           <Logo />
-        </motion.div>
-
+        </motion.section>
 
         {/* Hero Text */}
-        <motion.div 
+        <motion.section 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
           className="text-center mb-12 max-w-4xl"
+          aria-label="Welcome message"
         >
-          <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold text-spice-brown leading-tight font-cardo">
-            Experience the
-          </h3>
-          <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold text-spice-brown leading-tight mb-8 font-cardo">
-            Flavors of Afghanistan
-          </h3>
-        </motion.div>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-spice-brown leading-tight font-cardo">
+            Experience the Authentic Flavors of Afghanistan
+          </h1>
+          <p className="text-lg md:text-xl text-gray-700 mt-6 max-w-3xl mx-auto font-cardo">
+            Discover premium Afghan saffron, traditional spices, and authentic cuisine crafted with fresh ingredients and time-honored recipes.
+          </p>
+        </motion.section>
 
         {/* CTA Button */}
         <motion.div 
@@ -55,9 +58,7 @@ const AfghanLanding = () => {
             VIEW MENU
           </Button>
         </motion.div>
-
-      
-      </div>
+      </main>
 
       {/* Food Showcase Section */}
       <AnimatedSection>
