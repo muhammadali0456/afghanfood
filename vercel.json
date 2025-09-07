@@ -20,13 +20,8 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+      "source": "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
       "destination": "/index.html"
     }
-  ],
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "@vercel/node@2.15.10"
-    }
-  }
+  ]
 }
