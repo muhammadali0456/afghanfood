@@ -4,7 +4,7 @@ import Logo from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import AnimatedSection from "@/components/AnimatedSection";
 import SEO from "@/components/SEO";
-import { FoodShowcase, MenuSection, CateringSection, LocationSection, Footer } from "@/components/EnhancedSections";
+import { FoodShowcase, MenuSection, CateringSection,  LocationSection, Footer } from "@/components/EnhancedSections";
 
 const AfghanLanding = () => {
   return (

@@ -5,6 +5,7 @@ import galleryOrder from '@/galleryOrder.json';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { PhoneCall } from "lucide-react";
 
 const FoodShowcase = () => {
   const [foodImages, setFoodImages] = useState<any[]>([]);
@@ -300,74 +301,28 @@ const MenuSection = () => {
   );
 };
 
+
+
 const CateringSection = () => {
   return (
-    <section className="py-16 px-4 bg-background">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-spice-brown font-cardo mb-6">
-            Bring The Flavor To You.
-          </h2>
-          <p className="text-lg text-muted-foreground mb-2">
-            Contact us for <span className="font-semibold">Catering</span> information and we will get back to you
+    <section id="catering" className="py-12 px-4 bg-background">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex flex-col items-center text-center gap-4">
+          <p className="text-2xl md:text-3xl font-bold text-spice-brown font-cardo">
+            We also do catering
           </p>
-          <p className="text-lg text-muted-foreground">soon.</p>
+          <p className="text-lg text-foreground">
+            For info please call
+            <a
+              href="tel:+15168256666"
+              className="inline-flex items-center gap-2 text-primary font-semibold hover:underline ml-2"
+              aria-label="Call Afghan Saffron and Spice at 516 825 6666"
+            >
+              <PhoneCall className="w-5 h-5" aria-hidden="true" />
+              516 825 6666
+            </a>
+          </p>
         </div>
-
-        <form className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-spice-brown mb-2">
-              Full Name
-            </label>
-            <Input
-              placeholder="Name (Required)"
-              className="w-full"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-spice-brown mb-2">
-              Email Address
-            </label>
-            <Input
-              type="email"
-              placeholder="Email (Required)"
-              className="w-full"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-spice-brown mb-2">
-              Phone Number
-            </label>
-            <Input
-              type="tel"
-              placeholder="Phone"
-              className="w-full"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-spice-brown mb-2">
-              Message
-            </label>
-            <Textarea
-              placeholder="Message (Required)"
-              className="w-full min-h-32"
-              required
-            />
-          </div>
-
-       
-
-          <div className="text-center pt-4">
-            <Button variant="spice" size="lg" className="w-full font-cardo">
-              Send Message
-            </Button>
-          </div>
-        </form>
       </div>
     </section>
   );
