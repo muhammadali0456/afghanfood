@@ -21,7 +21,7 @@ const AfghanLanding = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
           className="mb-12 md:mb-16"
-          aria-label="Afghan Saffron and Spice Logo"
+          aria-label="Afghan Saffron and Spice logo"
         >
           <Logo />
         </motion.section>
@@ -38,7 +38,7 @@ const AfghanLanding = () => {
             Experience the Authentic Flavors of Afghanistan
           </h1>
           <p className="text-lg md:text-xl text-gray-700 mt-6 max-w-3xl mx-auto font-cardo">
-            Discover premium Afghan saffron, traditional spices, and authentic cuisine crafted with fresh ingredients and time-honored recipes.
+            Discover Premium Afghan saffron, traditional spices, and authentic cuisine crafted with fresh ingredients and time-honored recipes.
           </p>
         </motion.section>
 
