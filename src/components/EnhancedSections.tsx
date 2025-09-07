@@ -396,7 +396,7 @@ const LocationSection = () => {
         </a>
         <div className="mt-4 text-center text-spice-brown">
           <p className="font-bold">{address}</p>
-          <p>Ph. (516) 555-1234</p>
+          <p>Ph. 516 825 6666</p>
         </div>
       </div>
     </section>
