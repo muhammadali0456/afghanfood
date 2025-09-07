@@ -33,12 +33,6 @@ export default defineConfig(({ mode }) => ({
     },
     // Enable compression
     minify: 'esbuild',
-    terserOptions: {
-      compress: {
-        drop_console: mode === 'production',
-        drop_debugger: mode === 'production'
-      }
-    },
     // Reduce chunk size limit warnings
     chunkSizeWarningLimit: 1600,
   },
