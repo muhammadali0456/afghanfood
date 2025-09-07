@@ -3,41 +3,19 @@
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options", 
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        }
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
       ]
     },
     {
       "source": "/sitemap.xml",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/xml"
-        }
-      ]
+      "headers": [{ "key": "Content-Type", "value": "application/xml" }]
     },
     {
       "source": "/robots.txt",
-      "headers": [
-        {
-          "key": "Content-Type", 
-          "value": "text/plain"
-        }
-      ]
+      "headers": [{ "key": "Content-Type", "value": "text/plain" }]
     }
   ],
   "rewrites": [
@@ -47,8 +25,8 @@
     }
   ],
   "functions": {
-    "src/pages/api/**/*.js": {
-      "runtime": "nodejs18.x"
+    "api/**/*.js": {
+      "runtime": "@vercel/node@2.15.10"
     }
   }
 }
