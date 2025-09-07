@@ -1,27 +1,52 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-const Navigation = () => {
+type NavigationProps = {
+  invert?: boolean;
+};
+
+const Navigation = ({ invert = false }: NavigationProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const linkClass = cn(
+    "font-medium text-lg transition-colors",
+    invert ? "text-white hover:text-primary/90" : "text-spice-brown hover:text-primary"
+  );
 
   return (
     <>
       {/* Desktop Navigation */}
       <div className="hidden md:flex items-center space-x-12 mr-8">
-        <a href="#" className="text-spice-brown font-medium text-lg hover:text-primary transition-colors">
+        <a href="#" className={linkClass}>
           Home
         </a>
-        <a href="#menu" onClick={(e) => { e.preventDefault(); document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' }); }} className="text-spice-brown font-medium text-lg hover:text-primary transition-colors">
+        <a
+          href="#menu"
+          onClick={(e) => {
+            e.preventDefault();
+            document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className={linkClass}
+        >
           Menu
         </a>
-        <a href="#about" onClick={(e) => { e.preventDefault(); document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }); }} className="text-spice-brown font-medium text-lg hover:text-primary transition-colors">
+        <a
+          href="#about"
+          onClick={(e) => {
+            e.preventDefault();
+            document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className={linkClass}
+        >
           About
         </a>
       </div>
 
       {/* Mobile Menu Button */}
       <button
-        className="md:hidden text-spice-brown"
+        aria-label="Toggle menu"
+        className={cn("md:hidden", invert ? "text-white" : "text-spice-brown")}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
       >
         {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -34,10 +59,26 @@ const Navigation = () => {
             <a href="#" className="px-6 py-3 text-spice-brown font-medium text-lg hover:bg-muted">
               Home
             </a>
-            <a href="#menu" onClick={(e) => { e.preventDefault(); document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' }); setIsMenuOpen(false); }} className="px-6 py-3 text-spice-brown font-medium text-lg hover:bg-muted">
+            <a
+              href="#menu"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' });
+                setIsMenuOpen(false);
+              }}
+              className="px-6 py-3 text-spice-brown font-medium text-lg hover:bg-muted"
+            >
               Menu
             </a>
-            <a href="#about" onClick={(e) => { e.preventDefault(); document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }); setIsMenuOpen(false); }} className="px-6 py-3 text-spice-brown font-medium text-lg hover:bg-muted">
+            <a
+              href="#about"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+                setIsMenuOpen(false);
+              }}
+              className="px-6 py-3 text-spice-brown font-medium text-lg hover:bg-muted"
+            >
               About
             </a>
           </div>
