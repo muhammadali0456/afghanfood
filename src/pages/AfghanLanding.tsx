@@ -42,7 +42,7 @@ const AfghanLanding = () => {
               Experience the Authentic Flavors of Afghanistan
             </h1>
             <p className="text-sm md:text-xl text-white/90 mt-4 md:mt-6 max-w-2xl md:max-w-3xl mx-auto font-cardo drop-shadow">
-              Discover Premium Afghan saffron, traditional spices, and authentic cuisine crafted with fresh ingredients and time-honored recipes.
+()              Discover Premium Afghan saffron, traditional spices, and authentic cuisine crafted with fresh ingredients and time-honored recipes.
             </p>
             <div className="mt-8">
               <Button

@@ -105,7 +105,7 @@ const MenuSection = () => {
     },
     {
       category: "GRILL PLATTERS",
-      note: "All served with rice and a free soda or water",
+      noteRed: "All served with a free can of soda or water",
       items: [
         {
           name: "Chicken Tikka Kebab",
@@ -116,16 +116,6 @@ const MenuSection = () => {
           name: "Beef Kofta Kebab",
           description: "Ground beef seasoned with spices, formed into kebabs, and grilled.",
           price: "$11.99"
-        },
-        {
-          name: "Saffron Signature Grill Platter",
-          description: "Large combo platter including: 1 Lamb Tikka, 1 Beef Tikka, 1 Chicken Tikka, 2 Beef Kofta, 2 Chicken Kofta. Served with Afghan rice and salad.",
-          price: "$59.99"
-        },
-        {
-          name: "Saffron Signature with Lamb Chops",
-          description: "Same as above, but includes lamb chops for a premium upgrade.",
-          price: "$74.99"
         },
         {
           name: "Chicken Kofta Kebab",
@@ -146,13 +136,7 @@ const MenuSection = () => {
           name: "Lamb Chops with Rice and Salad",
           description: "Grilled lamb chops served with rice and a side salad.",
           price: "$19.99"
-        }
-      ]
-    },
-    {
-      category: "BURGERS & SANDWICHES",
-      note: "All served with a free can of soda",
-      items: [
+        },
         {
           name: "Chicken over Rice",
           description: "Grilled chicken served over a bed of seasoned rice.",
@@ -177,7 +161,28 @@ const MenuSection = () => {
           name: "Chapli Kabab over Rice",
           description: "Spiced, flattened minced meat patty (Afghan-style) served over rice.",
           price: "$9.99"
+        }
+      ]
+    },
+    {
+      category: "FAMILY PLATTERS",
+      items: [
+        {
+          name: "Saffron Signature Grill Platter",
+          description: "Large combo platter including: 1 Lamb Tikka, 1 Beef Tikka, 1 Chicken Tikka, 2 Beef Kofta, 2 Chicken Kofta. Served with Afghan rice and salad.",
+          price: "$59.99"
         },
+        {
+          name: "Saffron Signature with Lamb Chops",
+          description: "Same as above, but includes lamb chops for a premium upgrade.",
+          price: "$74.99"
+        }
+      ]
+    },
+    {
+      category: "BURGERS & SANDWICHES",
+      noteRed: "All served with a free can of soda or water",
+      items: [
         {
           name: "Classic Saffron Chicken Sandwich with Fries",
           description: "Marinated grilled chicken sandwich served with fries.",
@@ -265,8 +270,8 @@ const MenuSection = () => {
               <h3 className="text-3xl font-bold text-spice-brown font-cardo text-center mb-2">
                 {section.category}
               </h3>
-              {section.note && (
-                <p className="text-center text-muted-foreground mb-8 text-sm italic">{section.note}</p>
+              {section.noteRed && (
+                <p className={"text-center text-red-600 mb-8 text-sm italic"}>{section.noteRed}</p>
               )}
               <div className="space-y-6">
                 {section.items.map((item, index) => (
