@@ -7,6 +7,90 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { PhoneCall } from "lucide-react";
 
+const normalizeMenuImageKey = (value: string) => {
+  const base = (value || '')
+    .replace(/\s*\([^)]*\)\s*/g, ' ')
+    .replace(/&/g, 'and')
+    .replace(/\bwith\b/gi, ' ')
+    .replace(/\bover\b/gi, ' ')
+    .replace(/\bpcs\b/gi, ' ')
+    .replace(/\bpc\b/gi, ' ')
+    .replace(/\bfries\b/gi, ' ')
+    .replace(/\bsalad\b/gi, ' ');
+
+  const withoutPrefix = base.replace(
+    /^(?:afghansaffronandspice|afghan[\s_-]*saffron[\s_-]*(?:and|&)?[\s_-]*spice)[\s_-]*/i,
+    ''
+  );
+
+  const withoutSuffix = withoutPrefix
+    .replace(/\s*\(\d+\)\s*$/, '')
+    .replace(/[_\s-]*\d{3,}$/, '');
+
+  return withoutSuffix
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/[_-]+/g, ' ')
+    .replace(/[^a-zA-Z0-9]+/g, ' ')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, ' ');
+};
+
+const menuImageOverrides: Record<string, string> = {
+  [normalizeMenuImageKey('Bolani (4 pcs)')]: normalizeMenuImageKey('AfghanSaffronAndSpice_Bolani'),
+  [normalizeMenuImageKey('Mantu (4 pcs)')]: normalizeMenuImageKey('AfghanSaffronAndSpice_Mantu'),
+  [normalizeMenuImageKey('Kabuli Palow')]: normalizeMenuImageKey('AfghanSaffronAndSpice_KabuliPalow'),
+  [normalizeMenuImageKey('Beef Kofta Kebab')]: normalizeMenuImageKey('AfghanSaffronAndSpice_KoftaKebab'),
+  [normalizeMenuImageKey('Chicken Kofta Kebab')]: normalizeMenuImageKey('AfghanSaffronAndSpice_KoftaKebab'),
+  [normalizeMenuImageKey('Chicken Tikka Kebab')]: normalizeMenuImageKey('CHICKEN_TIKKA_KEBAB'),
+  [normalizeMenuImageKey('Chapli Kabab over Rice')]: normalizeMenuImageKey('AfghanSaffronAndSpice_ChapliKababOverRice'),
+  [normalizeMenuImageKey('Chicken over Rice')]: normalizeMenuImageKey('AfghanSaffronAndSpice_ChickenOverRice'),
+  [normalizeMenuImageKey('Lamb over Rice')]: normalizeMenuImageKey('AfghanSaffronAndSpice_LambOverRice'),
+  [normalizeMenuImageKey('Lamb & Chicken over Rice')]: normalizeMenuImageKey('LAMB_AND_CHIKEN_OVERRICE'),
+  [normalizeMenuImageKey('Lamb Tikka Kebab')]: normalizeMenuImageKey('LAMV_TIKKA_KEBAB'),
+  [normalizeMenuImageKey('Chicken or Lamb on Pita')]: normalizeMenuImageKey('Chicken or Lamb on Pita'),
+  [normalizeMenuImageKey('Lamb Chops with Rice and Salad')]: normalizeMenuImageKey('AfghanSaffronAndSpice_LambChopsOverRice'),
+  [normalizeMenuImageKey('Saffron Signature Grill Platter')]: normalizeMenuImageKey('AfghanSaffronAndSpice_SaffronSignatureGrillPlater'),
+  [normalizeMenuImageKey('Saffron Signature with Lamb Chops')]: normalizeMenuImageKey('AfghanSaffronAndSpice_SaffronSignatureWithLambChop'),
+  [normalizeMenuImageKey('Classic Saffron Chicken Sandwich with Fries')]: normalizeMenuImageKey('Classic Saffron Chicken Sandwich with Fries'),
+  [normalizeMenuImageKey('Famous Atish Chicken Sandwich with Fries')]: normalizeMenuImageKey('Famous Atish Chicken Sandwich with Fries'),
+  [normalizeMenuImageKey('Classic Cheeseburger with Fries')]: normalizeMenuImageKey('AfghanSaffronAndSpice_CheeseBurger'),
+  [normalizeMenuImageKey('Baklava (3 pcs)')]: normalizeMenuImageKey('AfghanSaffronAndSpice_Baklava'),
+  [normalizeMenuImageKey('Rice Pudding')]: normalizeMenuImageKey('AfghanSaffronAndSpice_RicePudding'),
+  [normalizeMenuImageKey('Saffron Green Tea')]: normalizeMenuImageKey('SAFFRON GREEN TEA'),
+};
+
+const pickBestMenuImageKey = (itemName: string, availableKeys: string[]) => {
+  const normalizedName = normalizeMenuImageKey(itemName);
+  const override = menuImageOverrides[normalizedName];
+  if (override) return override;
+
+  if (availableKeys.includes(normalizedName)) return normalizedName;
+
+  const nameTokens = new Set(normalizedName.split(' ').filter(Boolean));
+  if (nameTokens.size === 0) return null;
+
+  let bestKey: string | null = null;
+  let bestScore = 0;
+
+  for (const key of availableKeys) {
+    const keyTokensArr = key.split(' ').filter(Boolean);
+    if (keyTokensArr.length === 0) continue;
+    const keyTokens = new Set(keyTokensArr);
+    let overlap = 0;
+    for (const t of nameTokens) {
+      if (keyTokens.has(t)) overlap++;
+    }
+    const score = overlap / Math.max(nameTokens.size, keyTokens.size);
+    if (score > bestScore) {
+      bestScore = score;
+      bestKey = key;
+    }
+  }
+
+  return bestScore >= 0.6 ? bestKey : null;
+};
+
 const FoodShowcase = () => {
   const [foodImages, setFoodImages] = useState<any[]>([]);
 
@@ -54,7 +138,8 @@ const FoodShowcase = () => {
             .trim()
             .replace(/\s+/g, ' ');
           const fixed = normalized.replace(/\bRestraunt\b/i, 'Restaurant');
-          const titleCandidate = (fixed || fileName).replace(/\b\w/g, l => l.toUpperCase());
+          const displayBase = /^bottles$/i.test(fixed) ? 'Beverages' : (fixed || fileName);
+          const titleCandidate = displayBase.replace(/\b\w/g, l => l.toUpperCase());
           const title = /^hero$/i.test(fixed) ? '' : titleCandidate;
           return {
             id: path,
@@ -107,6 +192,8 @@ const FoodShowcase = () => {
 
 const MenuSection = () => {
   const [activeCategory, setActiveCategory] = useState('APPETIZER');
+  const [menuImageMap, setMenuImageMap] = useState<Map<string, string>>(new Map());
+  const [menuImageKeys, setMenuImageKeys] = useState<string[]>([]);
   const menuItems = [
     {
       category: "APPETIZER",
@@ -257,6 +344,34 @@ const MenuSection = () => {
     }
   };
 
+  useEffect(() => {
+    const imageModules = import.meta.glob('@/assets/*.{png,jpg,jpeg,svg}');
+
+    const loadMenuImages = async () => {
+      const paths = Object.keys(imageModules);
+      const entries = await Promise.all(
+        paths.map(async (path) => {
+          const importer = imageModules[path];
+          const module = await importer();
+          const fileStem = path.split('/')?.pop()?.split('.')[0] || '';
+          const key = normalizeMenuImageKey(fileStem);
+          return [key, (module as any).default as string] as const;
+        })
+      );
+
+      const map = new Map<string, string>();
+      for (const [key, src] of entries) {
+        if (key && src && !map.has(key)) {
+          map.set(key, src);
+        }
+      }
+      setMenuImageMap(map);
+      setMenuImageKeys(Array.from(map.keys()));
+    };
+
+    loadMenuImages();
+  }, []);
+
   return (
     <section id="menu" className="py-16 px-4 bg-muted/30">
       <div className="max-w-4xl mx-auto">
@@ -296,17 +411,45 @@ const MenuSection = () => {
               <div className="space-y-6">
                 {section.items.map((item, index) => (
                   <div key={index} className="border-b border-border/20 pb-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="text-xl font-semibold text-spice-brown font-cardo">
-                        {item.name}
-                      </h4>
-                      <span className="text-primary font-semibold ml-4">
-                        {item.price}
-                      </span>
+                    <div className="flex items-start gap-4">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex justify-between items-start mb-2 gap-3">
+                          <h4 className="text-xl font-semibold text-spice-brown font-cardo truncate">
+                            {item.name}
+                          </h4>
+                          <span className="text-primary font-semibold whitespace-nowrap">
+                            {item.price}
+                          </span>
+                        </div>
+                        <p className="text-muted-foreground leading-relaxed">
+                          {item.description}
+                        </p>
+                      </div>
+                      <div className="shrink-0">
+                        {(() => {
+                          const bestKey = pickBestMenuImageKey(item.name, menuImageKeys);
+                          const src = bestKey ? menuImageMap.get(bestKey) : null;
+
+                          if (!src) {
+                            return (
+                              <div
+                                className="w-16 h-16 md:w-20 md:h-20 rounded-md bg-border/20"
+                                aria-hidden="true"
+                              />
+                            );
+                          }
+
+                          return (
+                            <img
+                              src={src}
+                              alt={item.name}
+                              className="w-16 h-16 md:w-20 md:h-20 rounded-md object-cover"
+                              loading="lazy"
+                            />
+                          );
+                        })()}
+                      </div>
                     </div>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {item.description}
-                    </p>
                   </div>
                 ))}
               </div>
