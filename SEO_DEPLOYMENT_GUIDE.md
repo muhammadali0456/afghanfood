@@ -9,7 +9,7 @@
 - **Structured data (JSON-LD)**: Restaurant schema for Google's knowledge graph
 - **Canonical URLs**: Prevent duplicate content issues
 - **Semantic HTML**: Proper use of `<main>`, `<section>`, `<h1>` tags
-
+sdf
 ### 2. Technical SEO
 - **Sitemap.xml**: Helps Google crawl and index your pages
 - **Optimized robots.txt**: Controls crawler access

@@ -120,36 +120,46 @@ const FoodShowcase = () => {
 
       const sortedImagePaths = orderedFileNames.map(fileName => imagePathMap.get(fileName)).filter(Boolean) as string[];
 
-      const loadedImages = await Promise.all(
-        sortedImagePaths.map(async (path) => {
-          const importer = imageModules[path];
-          const module = await importer();
-          const fileName = path.split('/')?.pop()?.split('.')[0] || 'gallery image';
-          // Remove site name prefixes like "AfghanSaffronAndSpice" in various formats
-          const withoutPrefix = fileName.replace(/^(?:afghansaffronandspice|afghan[\s_-]*saffron[\s_-]*(?:and|&)?[\s_-]*spice)[\s_-]*/i, '');
-          // Remove trailing numeric or duplicate markers like "_1760376144082" or " (1)"
-          const withoutSuffix = withoutPrefix
-            .replace(/\s*\(\d+\)\s*$/,'')
-            .replace(/[_\s-]*\d{3,}$/,'');
-          // Normalize camelCase, underscores, and dashes into spaced words
-          const normalized = withoutSuffix
-            .replace(/([a-z])([A-Z])/g, '$1 $2')
-            .replace(/[_-]+/g, ' ')
-            .trim()
-            .replace(/\s+/g, ' ');
-          const fixed = normalized.replace(/\bRestraunt\b/i, 'Restaurant');
-          const displayBase = /^bottles$/i.test(fixed) ? 'Beverages' : (fixed || fileName);
-          const titleCandidate = displayBase.replace(/\b\w/g, l => l.toUpperCase());
-          const title = /^hero$/i.test(fixed) ? '' : titleCandidate;
-          return {
-            id: path,
-            title: title,
-            description: "A glimpse of Afghan Saffron & Spice",
-            image: (module as any).default,
-          };
-        })
-      );
-      setFoodImages(loadedImages);
+      const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 640px)').matches;
+      const limitedImagePaths = isMobile ? sortedImagePaths.slice(0, 8) : sortedImagePaths;
+
+      const mapPathToFood = async (path: string) => {
+        const importer = imageModules[path];
+        const module = await importer();
+        const fileName = path.split('/')?.pop()?.split('.')[0] || 'gallery image';
+        const withoutPrefix = fileName.replace(/^(?:afghansaffronandspice|afghan[\s_-]*saffron[\s_-]*(?:and|&)?[\s_-]*spice)[\s_-]*/i, '');
+        const withoutSuffix = withoutPrefix
+          .replace(/\s*\(\d+\)\s*$/,'')
+          .replace(/[_\s-]*\d{3,}$/,'');
+        const normalized = withoutSuffix
+          .replace(/([a-z])([A-Z])/g, '$1 $2')
+          .replace(/[_-]+/g, ' ')
+          .trim()
+          .replace(/\s+/g, ' ');
+        const fixed = normalized.replace(/\bRestraunt\b/i, 'Restaurant');
+        const displayBase = /^bottles$/i.test(fixed) ? 'Beverages' : (fixed || fileName);
+        const titleCandidate = displayBase.replace(/\b\w/g, l => l.toUpperCase());
+        const title = /^hero$/i.test(fixed) ? '' : titleCandidate;
+
+        return {
+          id: path,
+          title: title,
+          description: "A glimpse of Afghan Saffron & Spice",
+          image: (module as any).default,
+        };
+      };
+
+      const firstBatchSize = isMobile ? 4 : 6;
+      const firstBatchPaths = limitedImagePaths.slice(0, firstBatchSize);
+      const remainingPaths = limitedImagePaths.slice(firstBatchSize);
+
+      const firstBatch = await Promise.all(firstBatchPaths.map(mapPathToFood));
+      setFoodImages(firstBatch);
+
+      if (remainingPaths.length > 0) {
+        const rest = await Promise.all(remainingPaths.map(mapPathToFood));
+        setFoodImages(prev => [...prev, ...rest]);
+      }
     };
 
     loadImages();
@@ -175,6 +185,8 @@ const FoodShowcase = () => {
                 src={food.image}
                 alt={food.title}
                 className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+                decoding="async"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="pointer-events-none absolute bottom-0 inset-x-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
