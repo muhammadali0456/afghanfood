@@ -93,6 +93,8 @@ const pickBestMenuImageKey = (itemName: string, availableKeys: string[]) => {
 
 const FoodShowcase = () => {
   const [foodImages, setFoodImages] = useState<any[]>([]);
+  const [showAllMobile, setShowAllMobile] = useState(false);
+  const [hasMoreMobile, setHasMoreMobile] = useState(false);
 
   useEffect(() => {
     const imageModules = import.meta.glob('@/assets/*.{png,jpg,jpeg,svg}');
@@ -121,7 +123,10 @@ const FoodShowcase = () => {
       const sortedImagePaths = orderedFileNames.map(fileName => imagePathMap.get(fileName)).filter(Boolean) as string[];
 
       const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 640px)').matches;
-      const limitedImagePaths = isMobile ? sortedImagePaths.slice(0, 8) : sortedImagePaths;
+      const mobileLimit = 8;
+      const shouldLimitMobile = isMobile && !showAllMobile;
+      setHasMoreMobile(isMobile && sortedImagePaths.length > mobileLimit);
+      const limitedImagePaths = shouldLimitMobile ? sortedImagePaths.slice(0, mobileLimit) : sortedImagePaths;
 
       const mapPathToFood = async (path: string) => {
         const importer = imageModules[path];
@@ -163,7 +168,9 @@ const FoodShowcase = () => {
     };
 
     loadImages();
-  }, []);
+  }, [showAllMobile]);
+
+  const isMobileView = typeof window !== 'undefined' && window.matchMedia('(max-width: 640px)').matches;
 
   return (
     <section className="py-16 px-4 bg-background">
@@ -197,6 +204,14 @@ const FoodShowcase = () => {
             </div>
           ))}
         </div>
+
+        {isMobileView && hasMoreMobile && !showAllMobile && (
+          <div className="mt-6 flex justify-center">
+            <Button variant="spice" onClick={() => setShowAllMobile(true)}>
+              Show more
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   );
