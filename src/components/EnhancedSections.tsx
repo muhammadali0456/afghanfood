@@ -239,7 +239,6 @@ const MenuSection = () => {
     },
     {
       category: "GRILL PLATTERS",
-      noteRed: "All served with a free can of soda or water",
       items: [
         {
           name: "Chicken Tikka Kebab",
@@ -320,17 +319,17 @@ const MenuSection = () => {
         {
           name: "Classic Saffron Chicken Sandwich with Fries",
           description: "Marinated grilled chicken sandwich served with fries.",
-          price: "$8.99"
+          price: "$9.99"
         },
         {
           name: "Famous Atish Chicken Sandwich with Fries",
           description: "A spicy grilled chicken sandwich (Atish = “fire”) served with fries.",
-          price: "$8.99"
+          price: "$9.99"
         },
         {
           name: "Classic Cheeseburger with Fries",
           description: "Traditional beef cheeseburger served with fries.",
-          price: "$8.89"
+          price: "$9.99"
         }
       ]
     },
